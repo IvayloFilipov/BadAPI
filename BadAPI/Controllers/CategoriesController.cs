@@ -9,6 +9,8 @@ using System.Runtime;
 using System.Security;
 using System.Timers;
 
+using static Common.GlobalConstants;
+
 namespace BadApi.Controllers
 {
     [ApiController]
@@ -36,7 +38,7 @@ namespace BadApi.Controllers
 
             if (category.Description != null && category.Description.Length > 100)
             {
-                return Ok(new { category.Id, category.Name, Note = "Long description" });
+                return Ok(new { category.Id, category.Name, Note = Long_Description });
             }
 
             return Ok(category);
@@ -46,7 +48,7 @@ namespace BadApi.Controllers
         public ActionResult Post(Category category)
         {
             var result = _service.AddCategory(category);
-            if (result == "Category name is required")
+            if (result == Category_Name_Is_Required)
                 return BadRequest(result);
 
             return Ok(result);
@@ -56,7 +58,7 @@ namespace BadApi.Controllers
         public ActionResult Put(int id, Category category)
         {
             if (id != category.Id)
-                return BadRequest("Id mismatch");
+                return BadRequest(Id_Mismatch);
 
             var existing = _repo.GetById(id);
             if (existing == null)
@@ -67,7 +69,7 @@ namespace BadApi.Controllers
 
             _repo.Update(existing);
 
-            return Ok("Updated");
+            return Ok(Updated);
         }
 
         [HttpDelete("{id}")]
@@ -79,7 +81,7 @@ namespace BadApi.Controllers
 
             _repo.Delete(id);
 
-            return Ok("Deleted");
+            return Ok(Deleted);
         }
     }
 }

@@ -8,6 +8,8 @@ using System.Runtime;
 using System.Security;
 using System.Timers;
 
+using static Common.GlobalConstants;
+
 namespace BadApi.Services
 {
     public class ProductService
@@ -19,11 +21,11 @@ namespace BadApi.Services
         {
             if (product.Price <= 0)
             {
-                return "Price must be greater than zero";
+                return Price_Must_Be_Greater_Than_Zero;
             }
 
             _repo.Add(product);
-            return "Product added";
+            return Product_Added;
         }
 
         public List<Product> GetProducts()
@@ -36,13 +38,13 @@ namespace BadApi.Services
         {
             var product = _repo.GetById(id);
             if (product == null)
-                return "Product not found";
+                return Product_Not_Found;
 
             if (product.Price > 100)
-                return "Cannot delete expensive products";
+                return Cannot_Delete_Expensive_Products;
 
             _repo.Delete(id);
-            return "Deleted";
+            return Deleted;
         }
     }
 }

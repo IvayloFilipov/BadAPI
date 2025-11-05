@@ -8,6 +8,8 @@ using System.Runtime;
 using System.Security;
 using System.Timers;
 
+using static Common.GlobalConstants;
+
 namespace BadApi.Services
 {
     public class CategoryService
@@ -19,11 +21,11 @@ namespace BadApi.Services
         {
             if (string.IsNullOrEmpty(category.Name))
             {
-                return "Category name is required";
+                return Category_Name_Is_Required;
             }
 
             _repo.Add(category);
-            return "Category added";
+            return Category_Added;
         }
 
         public List<Category> GetCategories()
