@@ -6,9 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\BadAPI.Data\BadAPI.Data.csproj" />
-    <ProjectReference Include="..\Common\Common.csproj" />
-  </ItemGroup>
-
 </Project>

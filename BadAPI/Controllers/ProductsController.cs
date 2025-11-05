@@ -9,6 +9,8 @@ using System.Runtime;
 using System.Security;
 using System.Timers;
 
+using static Common.GlobalConstants;
+
 namespace BadApi.Controllers
 {
     [ApiController]
@@ -36,7 +38,7 @@ namespace BadApi.Controllers
 
             if (product.Price > 50)
             {
-                return Ok(new { product.Id, product.Name, Discount = "10%" });
+                return Ok(new { product.Id, product.Name, Discount = Ten_Percent });
             }
 
             return Ok(product);
@@ -46,7 +48,7 @@ namespace BadApi.Controllers
         public ActionResult Post(Product p)
         {
             var result = _service.AddProduct(p);
-            if (result == "Price must be greater than zero")
+            if (result == Price_Must_Be_Greater_Than_Zero)
                 return BadRequest(result);
 
             return Ok(result);
@@ -56,10 +58,10 @@ namespace BadApi.Controllers
         public ActionResult Put(int id, Product p)
         {
             if (id != p.Id)
-                return BadRequest("Id mismatch");
+                return BadRequest(Id_Mismatch);
 
             if (p.Price <= 0)
-                return BadRequest("Invalid price");
+                return BadRequest(Invalid_Price);
 
             var existingProduct = _repo.GetById(id);
             if (existingProduct == null)
@@ -72,7 +74,7 @@ namespace BadApi.Controllers
 
             _repo.Update(existingProduct);
 
-            return Ok("Updated");
+            return Ok(Updated);
         }
 
         [HttpDelete("{id}")]
@@ -80,10 +82,10 @@ namespace BadApi.Controllers
         {
             var result = _service.DeleteProduct(id);
 
-            if (result == "Product not found")
+            if (result == Product_Not_Found)
                 return NotFound(result);
 
-            if (result == "Cannot delete expensive products")
+            if (result == Cannot_Delete_Expensive_Products)
                 return BadRequest(result);
 
             return Ok(result);
