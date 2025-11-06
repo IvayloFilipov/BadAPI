@@ -1,13 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using BadApi.Services;
-using BadApi.Repositories;
-using BadApi.Data;
-using BadAPI.Data.Entities;
-using System.Text;
-using System.Threading;
-using System.Runtime;
-using System.Security;
-using System.Timers;
+﻿using BadAPI.Data.Entities;
+using BadAPI.Data.Interfaces;
+using BadAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 using static Common.GlobalConstants;
 
@@ -17,71 +11,190 @@ namespace BadApi.Controllers
     [Route("api/[controller]")]
     public class CategoriesController : ControllerBase
     {
-        private CategoryService _service = new CategoryService();
-        private CategoryRepository _repo = new CategoryRepository();
+        //private CategoryService _service = new CategoryService();
+        //private CategoryRepository _repo = new CategoryRepository();
+        private readonly ICategoryService categoryService;
+        private readonly ICategoryRepository categoryRepo;
 
-        [HttpGet]
-        public ActionResult Get()
+        public CategoriesController(ICategoryService categoryService, ICategoryRepository categoryRepo)
         {
-            var categories = _service.GetCategories();
-            return Ok(categories);
+            this.categoryService = categoryService;
+            this.categoryRepo = categoryRepo;
         }
 
+        //[HttpGet]
+        //public ActionResult Get()
+        //{
+        //    var categories = _service.GetCategories();
+        //    return Ok(categories);
+        //}
+
+        [HttpGet("getcategories")]
+        public async Task<IActionResult> GetCategories()
+        {
+            try
+            {
+                var categories = await categoryService.GetCategoriesAsync();
+
+                return Ok(categories);
+
+            }
+            catch (NullReferenceException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        //[HttpGet("{id}")]
+        //public ActionResult Get(int id)
+        //{
+        //    var category = _repo.GetById(id);
+        //    if (category == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    if (category.Description != null && category.Description.Length > 100)
+        //    {
+        //        return Ok(new { category.Id, category.Name, Note = Long_Description });
+        //    }
+
+        //    return Ok(category);
+        //}
         [HttpGet("{id}")]
-        public ActionResult Get(int id)
+        public async Task<IActionResult> GetCategory(int id)
         {
-            var category = _repo.GetById(id);
-            if (category == null)
+            try
             {
-                return NotFound();
-            }
+                var category = await categoryRepo.GetCategooryByIdAsync(id);
 
-            if (category.Description != null && category.Description.Length > 100)
+                if (category == null)
+                {
+                    return NotFound();
+                }
+
+                if (category.Description != null && category.Description.Length > 100)
+                {
+                    return Ok(new { category.Id, category.Name, Note = Long_Description });
+                }
+
+                return Ok(category);
+            }
+            catch (NullReferenceException ex)
             {
-                return Ok(new { category.Id, category.Name, Note = Long_Description });
+                return NotFound(ex.Message);
             }
-
-            return Ok(category);
         }
 
-        [HttpPost]
-        public ActionResult Post(Category category)
-        {
-            var result = _service.AddCategory(category);
-            if (result == Category_Name_Is_Required)
-                return BadRequest(result);
+        //[HttpPost]
+        //public ActionResult Post(Category category)
+        //{
+        //    var result = _service.AddCategory(category);
+        //    if (result == Category_Name_Is_Required)
+        //        return BadRequest(result);
 
-            return Ok(result);
+        //    return Ok(result);
+        //}
+        [HttpPost("add")]
+        public async Task<IActionResult> AddCategory(Category category)
+        {
+            try
+            {
+                var result = await categoryService.AddCategoryAsync(category);
+
+                if (result == Category_Name_Is_Required)
+                {
+                    return BadRequest(result);
+                }
+
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        [HttpPut("{id}")]
-        public ActionResult Put(int id, Category category)
+        //[HttpPut("{id}")]
+        //public ActionResult Put(int id, Category category)
+        //{
+        //    if (id != category.Id)
+        //        return BadRequest(Id_Mismatch);
+
+        //    var existing = _repo.GetById(id);
+        //    if (existing == null)
+        //        return NotFound();
+
+        //    existing.Name = category.Name;
+        //    existing.Description = category.Description;
+
+        //    _repo.Update(existing);
+
+        //    return Ok(Updated);
+        //}
+        [HttpPut("{categoryId}")]
+        public async Task<ActionResult> UpdateCategory(int id, Category category)
         {
-            if (id != category.Id)
-                return BadRequest(Id_Mismatch);
+            try
+            {
+                if (id != category.Id)
+                    return BadRequest(Id_Mismatch);
 
-            var existing = _repo.GetById(id);
-            if (existing == null)
-                return NotFound();
+                var existing = await categoryRepo.GetCategooryByIdAsync(id);
 
-            existing.Name = category.Name;
-            existing.Description = category.Description;
+                if (existing == null)
+                    return NotFound();
 
-            _repo.Update(existing);
+                existing.Name = category.Name;
+                existing.Description = category.Description;
 
-            return Ok(Updated);
+                await categoryRepo.UpdateCategoryAsync(existing);
+
+                return Ok(Updated);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (NullReferenceException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
-        [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        //[HttpDelete("{id}")]
+        //public ActionResult Delete(int id)
+        //{
+        //    var category = _repo.GetById(id);
+        //    if (category == null)
+        //        return NotFound();
+
+        //    _repo.Delete(id);
+
+        //    return Ok(Deleted);
+        //}
+        [HttpDelete("{categoryId}")]
+        public async Task<IActionResult> DeleteCategory(int id)
         {
-            var category = _repo.GetById(id);
-            if (category == null)
-                return NotFound();
+            try
+            {
+                var category = await categoryRepo.GetCategooryByIdAsync(id);
 
-            _repo.Delete(id);
+                if (category == null)
+                    return NotFound();
 
-            return Ok(Deleted);
+                await categoryRepo.DeleteCategoryAsync(id);
+
+                return Ok(Deleted);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (NullReferenceException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

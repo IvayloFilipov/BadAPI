@@ -1,36 +1,51 @@
-﻿using System.Collections.Generic;
-using BadApi.Data;
-using BadApi.Repositories;
-using BadAPI.Data.Entities;
-using System.Text;
-using System.Threading;
-using System.Runtime;
-using System.Security;
-using System.Timers;
+﻿using BadAPI.Data.Entities;
+using BadAPI.Data.Interfaces;
+using BadAPI.Services.Interfaces;
 
 using static Common.GlobalConstants;
 
 namespace BadApi.Services
 {
-    public class CategoryService
+    public class CategoryService : ICategoryService
     {
-        private CategoryRepository _repo = new CategoryRepository();
+        //private CategoryRepository _repo = new CategoryRepository();
+        private readonly ICategoryRepository categoryRepo;
+
+        public CategoryService(ICategoryRepository categoryRepo)
+        {
+                this.categoryRepo = categoryRepo;
+        }
 
         // Business rule: Name cannot be empty
-        public string AddCategory(Category category)
+        //public string AddCategory(Category category)
+        //{
+        //    if (string.IsNullOrEmpty(category.Name))
+        //    {
+        //        return Category_Name_Is_Required;
+        //    }
+
+        //    _repo.Add(category);
+        //    return Category_Added;
+        //}
+        public async Task<string> AddCategoryAsync(Category category)
         {
             if (string.IsNullOrEmpty(category.Name))
             {
                 return Category_Name_Is_Required;
             }
 
-            _repo.Add(category);
+            await categoryRepo.InsertCategoryAsync(category);
+
             return Category_Added;
         }
 
-        public List<Category> GetCategories()
+        //public List<Category> GetCategories()
+        //{
+        //    return _repo.GetAll();
+        //}
+        public async Task<List<Category>> GetCategoriesAsync()
         {
-            return _repo.GetAll();
+            return await categoryRepo.GetAllCategoriesAsync();
         }
     }
 }

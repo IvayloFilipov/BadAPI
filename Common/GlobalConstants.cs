@@ -9,6 +9,8 @@
         public const string Updated = "Updated";
         public const string Deleted = "Deleted";
         public const string Category_Added = "Category added";
+        public const int Category_Description_Max_Length = 1000;
+        public const int Category_Name_Max_Length = 200;
 
         // Products constants
         public const string Ten_Percent = "10%";
@@ -17,5 +19,6 @@
         public const string Product_Not_Found = "Product not found";
         public const string Cannot_Delete_Expensive_Products = "Cannot delete expensive products";
         public const string Product_Added = "Product added";
+        public const int Product_Name_Max_Length = 200;
     }
 }

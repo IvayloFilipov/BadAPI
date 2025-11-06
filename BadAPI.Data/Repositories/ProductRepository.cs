@@ -1,53 +1,104 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using BadApi.Data;
+﻿using BadApi.Data;
 using BadAPI.Data.Entities;
+using BadAPI.Data.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace BadApi.Repositories
 {
-    public class ProductRepository
+    public class ProductRepository : IProductRepository
     {
-        private BadDbContext _context = new BadDbContext();
+        //private BadDbContext _context = new BadDbContext();
+        private readonly BadDbContext context;
 
-        public List<Product> GetAll()
+        public ProductRepository(BadDbContext context)
         {
-            return _context.Products.ToList();
+            this.context = context;
         }
 
-        public Product GetById(int id)
+        //public List<Product> GetAll()
+        //{
+        //    return _context.Products.ToList();
+        //}
+        public async Task<List<Product>> GetAllProductsAsync()
         {
-            return _context.Products.FirstOrDefault(x => x.Id == id);
+            return await context.Products.ToListAsync();
         }
 
-        public void Add(Product product)
+        //public Product GetById(int id)
+        //{
+        //    return _context.Products.FirstOrDefault(x => x.Id == id);
+        //}
+
+        //public Product GetById(int id)
+        //{
+        //    return _context.Products.FirstOrDefault(x => x.Id == id);
+        //}
+        public async Task<Product> GetProductsByIdAsync(int id)
         {
-            _context.Products.Add(product);
-            _context.SaveChanges();
+            var product = await context.Products.FirstOrDefaultAsync(x => x.Id == id);
+
+            return product;
         }
 
-        public void Update(Product product)
+        //public void Add(Product product)
+        //{
+        //    _context.Products.Add(product);
+        //    _context.SaveChanges();
+        //}
+        public async Task AddProductAsync(Product product)
         {
-            var p = _context.Products.FirstOrDefault(x => x.Id == product.Id);
-            if (p != null)
+            await context.Products.AddAsync(product);
+            await context.SaveChangesAsync();
+        }
+
+        //public void Update(Product product)
+        //{
+        //    var p = _context.Products.FirstOrDefault(x => x.Id == product.Id);
+        //    if (p != null)
+        //    {
+        //        p.Name = product.Name;
+        //        p.Price = product.Price;
+
+        //        p.CategoryId = product.CategoryId;
+        //        p.CategoryName = product.CategoryName;
+
+        //        _context.SaveChanges();
+        //    }
+        //}
+        public async Task UpdateProductAsync(Product product)
+        {
+            var currProduct = await context.Products.FirstOrDefaultAsync(x => x.Id == product.Id);
+
+            if (currProduct != null)
             {
-                p.Name = product.Name;
-                p.Price = product.Price;
+                currProduct.Name = product.Name;
+                currProduct.Price = product.Price;
+                
+                currProduct.CategoryId = product.CategoryId;
+                currProduct.CategoryName = product.CategoryName;
 
-                p.CategoryId = product.CategoryId;
-                p.CategoryName = product.CategoryName;
-
-                _context.SaveChanges();
+                context.SaveChangesAsync();
             }
         }
 
-        public void Delete(int id)
+        //public void Delete(int id)
+        //{
+        //    var p = _context.Products.FirstOrDefault(x => x.Id == id);
+        //    if (p != null)
+        //    {
+        //        _context.Products.Remove(p);
+        //        _context.SaveChanges();
+        //    }
+        //}
+        public async Task DeleteProductAsync(int id)
         {
-            var p = _context.Products.FirstOrDefault(x => x.Id == id);
-            if (p != null)
+            var currProduct = await context.Products.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (currProduct != null)
             {
-                _context.Products.Remove(p);
-                _context.SaveChanges();
+                context.Products.Remove(currProduct);
+
+                await context.SaveChangesAsync();
             }
         }
     }

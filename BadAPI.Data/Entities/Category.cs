@@ -1,15 +1,21 @@
-﻿using System.Text;
-using System.Threading;
-using System.Runtime;
-using System.Security;
-using System.Timers;
+﻿using System.ComponentModel.DataAnnotations;
+
+using static Common.GlobalConstants;
 
 namespace BadAPI.Data.Entities
 {
+    [Serializable]
     public class Category
     {
+        [Key]
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+
+        [Required]
+        [MaxLength(Category_Name_Max_Length)]
+        public string? Name { get; set; }
+
+        [Required]
+        [MaxLength(Category_Description_Max_Length)]
+        public string? Description { get; set; }
     }
 }
