@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<BadDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//,b => b.MigrationsAssembly("BadAPI.Data")));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
