@@ -1,49 +1,80 @@
-﻿using System.Collections.Generic;
-using BadApi.Data;
-using BadApi.Repositories;
-using BadAPI.Data.Entities;
-using System.Text;
-using System.Threading;
-using System.Runtime;
-using System.Security;
-using System.Timers;
+﻿using BadAPI.Data.Entities;
+using BadAPI.Data.Interfaces;
+using BadAPI.Services.Interfaces;
 
 using static Common.GlobalConstants;
 
 namespace BadApi.Services
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
-        private ProductRepository _repo = new ProductRepository();
+        //private ProductRepository _repo = new ProductRepository();
+        private IProductRepository productRepo;
+
+        public ProductService(IProductRepository productRepo)
+        {
+             this.productRepo = productRepo;
+        }
 
         // Business rule: price must be > 0
-        public string AddProduct(Product product)
+        //public string AddProduct(Product product)
+        //{
+        //    if (product.Price <= 0)
+        //    {
+        //        return Price_Must_Be_Greater_Than_Zero;
+        //    }
+
+        //    _repo.Add(product);
+        //    return Product_Added;
+        //}
+        public async Task<string> AddProductAsync(Product product)
         {
             if (product.Price <= 0)
             {
                 return Price_Must_Be_Greater_Than_Zero;
             }
 
-            _repo.Add(product);
+            await productRepo.AddProductAsync(product);
+
             return Product_Added;
         }
 
-        public List<Product> GetProducts()
+        //public List<Product> GetProducts()
+        //{
+        //    return _repo.GetAll();
+        //}
+        public async Task<List<Product>> GetProductsAsync()
         {
-            return _repo.GetAll();
+            var products = await productRepo.GetAllProductsAsync();
+
+            return products;
         }
 
         // Business rule: cannot delete product if price > 100
-        public string DeleteProduct(int id)
+        //public string DeleteProduct(int id)
+        //{
+        //    var product = _repo.GetById(id);
+        //    if (product == null)
+        //        return Product_Not_Found;
+
+        //    if (product.Price > 100)
+        //        return Cannot_Delete_Expensive_Products;
+
+        //    _repo.Delete(id);
+        //    return Deleted;
+        //}
+        public async Task<string> DeleteProductByIdAsync(int id)
         {
-            var product = _repo.GetById(id);
+            var product = await productRepo.GetProductsByIdAsync(id);
+
             if (product == null)
                 return Product_Not_Found;
 
             if (product.Price > 100)
                 return Cannot_Delete_Expensive_Products;
 
-            _repo.Delete(id);
+            await productRepo.DeleteProductAsync(id);
+
             return Deleted;
         }
     }
