@@ -25,5 +25,7 @@ namespace BadAPI.Data.Entities
 
         [NotMapped]
         public string? InternalCode { get; set; }
+
+        public ICollection<Review> Reviews { get; set; }
     }
 }
