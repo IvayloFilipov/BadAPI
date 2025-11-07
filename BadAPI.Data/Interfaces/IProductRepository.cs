@@ -9,5 +9,8 @@ namespace BadAPI.Data.Interfaces
         Task AddProductAsync(Product product);
         Task UpdateProductAsync(Product product);
         Task DeleteProductAsync(int id);
+
+        // added this method to save changes for consistancy after reafactoring
+        Task SaveChangesAsync();
     }
 }

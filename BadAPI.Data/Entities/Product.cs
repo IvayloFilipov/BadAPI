@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 using static Common.GlobalConstants;
 
 namespace BadAPI.Data.Entities
@@ -21,11 +22,11 @@ namespace BadAPI.Data.Entities
 
         [ForeignKey(nameof(Category))]
         public int CategoryId { get; set; }
-        public /*string?*/Category CategoryName { get; set; } = new Category();
+        public Category CategoryName { get; set; } = new Category();
 
         [NotMapped]
         public string? InternalCode { get; set; }
 
-        public ICollection<Review> Reviews { get; set; }
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
 }

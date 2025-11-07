@@ -9,11 +9,13 @@ namespace BadApi.Services
     public class ProductService : IProductService
     {
         //private ProductRepository _repo = new ProductRepository();
-        private IProductRepository productRepo;
+        private readonly IProductRepository productRepo;
+        private readonly IReviewRepository reviewRepo;
 
-        public ProductService(IProductRepository productRepo)
+        public ProductService(IProductRepository productRepo, IReviewRepository reviewRepo)
         {
-             this.productRepo = productRepo;
+            this.productRepo = productRepo;
+            this.reviewRepo = reviewRepo;
         }
 
         // Business rule: price must be > 0
@@ -35,6 +37,7 @@ namespace BadApi.Services
             }
 
             await productRepo.AddProductAsync(product);
+            await productRepo.SaveChangesAsync();
 
             return Product_Added;
         }
@@ -68,12 +71,24 @@ namespace BadApi.Services
             var product = await productRepo.GetProductsByIdAsync(id);
 
             if (product == null)
+            {
                 return Product_Not_Found;
+            }
 
-            if (product.Price > 100)
-                return Cannot_Delete_Expensive_Products;
+            if (product.Price > 50)
+            {
+                return Cannot_Delete_Product;
+            }
+
+            bool hasReviews = await reviewRepo.ProductHasReviewsAsync(id);
+
+            if (hasReviews)
+            {
+                return Cannot_Delete_Product_With_Review;
+            }
 
             await productRepo.DeleteProductAsync(id);
+            await productRepo.SaveChangesAsync();
 
             return Deleted;
         }

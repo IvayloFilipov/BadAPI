@@ -18,8 +18,10 @@
         public const string Invalid_Price = "Invalid price";
         public const string Product_Not_Found = "Product not found";
         public const string Cannot_Delete_Expensive_Products = "Cannot delete expensive products";
+        public const string Cannot_Delete_Product = "Products priced over $50 cannot be deleted.";
         public const string Product_Added = "Product added";
         public const int Product_Name_Max_Length = 200;
+        public const string Cannot_Delete_Product_With_Review = "Product cannot be deleted because it has customer reviews.";
 
         // Reviews constants
         public const string Rating_Must_Be_Between_1_And_5 = "Rating must be between 1 and 5";
