@@ -4,11 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BadAPI.Data.Entities
 {
-    public class Review
+    public class Review : BaseEntity
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         [MaxLength(1000)]
         public string? Comment { get; set; }

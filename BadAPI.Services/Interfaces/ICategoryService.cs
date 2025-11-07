@@ -1,10 +1,11 @@
 ﻿using BadAPI.Data.Entities;
+using Common.DTOs;
 
 namespace BadAPI.Services.Interfaces
 {
     public interface ICategoryService
     {
-        Task<string> AddCategoryAsync(Category category);
-        Task<List<Category>> GetCategoriesAsync();
+        Task<string> AddCategoryAsync(CategoryDTO category);
+        Task<List<CategoryDTO>> GetCategoriesAsync();
     }
 }
