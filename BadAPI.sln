@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BadAPI.Services", "BadAPI.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{CCAA5F9B-9ED2-4AFE-99DF-36E9E51EA5AB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{C515DC67-E541-40CF-AA6D-3F47C0AB2C47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{CCAA5F9B-9ED2-4AFE-99DF-36E9E51EA5AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCAA5F9B-9ED2-4AFE-99DF-36E9E51EA5AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCAA5F9B-9ED2-4AFE-99DF-36E9E51EA5AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C515DC67-E541-40CF-AA6D-3F47C0AB2C47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C515DC67-E541-40CF-AA6D-3F47C0AB2C47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C515DC67-E541-40CF-AA6D-3F47C0AB2C47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C515DC67-E541-40CF-AA6D-3F47C0AB2C47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
