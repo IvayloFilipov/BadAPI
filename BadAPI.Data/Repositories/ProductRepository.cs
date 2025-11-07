@@ -28,14 +28,14 @@ namespace BadApi.Repositories
         //{
         //    return _context.Products.FirstOrDefault(x => x.Id == id);
         //}
-
-        //public Product GetById(int id)
-        //{
-        //    return _context.Products.FirstOrDefault(x => x.Id == id);
-        //}
         public async Task<Product> GetProductsByIdAsync(int id)
         {
-            var product = await context.Products.FirstOrDefaultAsync(x => x.Id == id);
+            var product = await context.Products.FindAsync(id);
+
+            if (product == null)
+            {
+                throw new InvalidOperationException($"Product with id {id} not found.");
+            }
 
             return product;
         }
@@ -48,6 +48,7 @@ namespace BadApi.Repositories
         public async Task AddProductAsync(Product product)
         {
             await context.Products.AddAsync(product);
+
             await context.SaveChangesAsync();
         }
 
@@ -77,7 +78,7 @@ namespace BadApi.Repositories
                 currProduct.CategoryId = product.CategoryId;
                 currProduct.CategoryName = product.CategoryName;
 
-                context.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
         }
 
@@ -100,6 +101,12 @@ namespace BadApi.Repositories
 
                 await context.SaveChangesAsync();
             }
+        }
+
+        // added this method to save changes for consistancy after reafactoring
+        public async Task SaveChangesAsync()
+        {
+            await context.SaveChangesAsync();
         }
     }
 }

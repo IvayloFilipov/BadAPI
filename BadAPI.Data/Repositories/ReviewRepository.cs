@@ -55,6 +55,13 @@ namespace BadAPI.Data.Repositories
         public async Task SaveChangesAsync()
         {
             await context.SaveChangesAsync();
-        } 
+        }
+
+        public async Task<bool> ProductHasReviewsAsync(int productId)
+        {
+            var booleanResult = await context.Reviews.AnyAsync(r => r.ProductId == productId);
+
+            return booleanResult;
+        }
     }
 }

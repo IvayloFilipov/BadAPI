@@ -10,5 +10,8 @@ namespace BadAPI.Data.Interfaces
         Task UpdateReviewAsync(Review review);
         Task DeleteReviewAsync(Review review);
         Task SaveChangesAsync();
+
+        // Added this after refactoring to check if a product has any reviews
+        Task<bool> ProductHasReviewsAsync(int productId);
     }
 }
