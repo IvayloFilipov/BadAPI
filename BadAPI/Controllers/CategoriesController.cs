@@ -1,6 +1,7 @@
 ﻿using BadAPI.Data.Entities;
 using BadAPI.Data.Interfaces;
 using BadAPI.Services.Interfaces;
+using Common.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 using static Common.GlobalConstants;
@@ -96,7 +97,7 @@ namespace BadApi.Controllers
         //    return Ok(result);
         //}
         [HttpPost("add")]
-        public async Task<IActionResult> AddCategory(Category category)
+        public async Task<IActionResult> AddCategory(CategoryDTO category)
         {
             try
             {
