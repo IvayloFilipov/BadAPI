@@ -1,10 +1,5 @@
 using BadApi.Data;
-using BadApi.Repositories;
-using BadApi.Services;
-using BadAPI.Data.Interfaces;
-using BadAPI.Data.Repositories;
-using BadAPI.Services;
-using BadAPI.Services.Interfaces;
+using BadAPI;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,18 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<BadDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("BadAPI")));
 
+//Added DI for repositories and services
+builder.Services.AddServices();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-//Added DI for repositories and services
-builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
-builder.Services.AddTransient<ICategoryService, CategoryService>();
-builder.Services.AddTransient<IProductRepository, ProductRepository>();
-builder.Services.AddTransient<IProductService, ProductService>();
-builder.Services.AddTransient<IReviewRepository, ReviewRepository>();
-builder.Services.AddTransient<IReviewService, ReviewService>();
-
 
 var app = builder.Build();
 

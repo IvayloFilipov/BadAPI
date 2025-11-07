@@ -7,11 +7,8 @@ using static Common.GlobalConstants;
 namespace BadAPI.Data.Entities
 {
     [Serializable]
-    public class Product
+    public class Product : BaseEntity
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         [MaxLength(Product_Name_Max_Length)]
         public string? Name { get; set; }

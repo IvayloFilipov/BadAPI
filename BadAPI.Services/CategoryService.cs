@@ -1,6 +1,6 @@
-﻿using BadAPI.Data.Entities;
-using BadAPI.Data.Interfaces;
+﻿using BadAPI.Data.Interfaces;
 using BadAPI.Services.Interfaces;
+using Common.DTOs;
 
 using static Common.GlobalConstants;
 
@@ -27,7 +27,7 @@ namespace BadApi.Services
         //    _repo.Add(category);
         //    return Category_Added;
         //}
-        public async Task<string> AddCategoryAsync(Category category)
+        public async Task<string> AddCategoryAsync(CategoryDTO category)
         {
             if (string.IsNullOrEmpty(category.Name))
             {
@@ -43,7 +43,7 @@ namespace BadApi.Services
         //{
         //    return _repo.GetAll();
         //}
-        public async Task<List<Category>> GetCategoriesAsync()
+        public async Task<List<CategoryDTO>> GetCategoriesAsync()
         {
             return await categoryRepo.GetAllCategoriesAsync();
         }

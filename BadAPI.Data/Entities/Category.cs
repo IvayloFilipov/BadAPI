@@ -5,11 +5,8 @@ using static Common.GlobalConstants;
 namespace BadAPI.Data.Entities
 {
     [Serializable]
-    public class Category
+    public class Category : BaseEntity
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         [MaxLength(Category_Name_Max_Length)]
         public string? Name { get; set; }

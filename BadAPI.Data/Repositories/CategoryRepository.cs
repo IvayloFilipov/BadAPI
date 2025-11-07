@@ -1,6 +1,6 @@
 ﻿using BadApi.Data;
-using BadAPI.Data.Entities;
 using BadAPI.Data.Interfaces;
+using Common.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace BadApi.Repositories
@@ -18,9 +18,9 @@ namespace BadApi.Repositories
         //{
         //    return context.Set<Category>().ToList();
         //}
-        public async Task<List<Category>> GetAllCategoriesAsync()
+        public async Task<List<CategoryDTO>> GetAllCategoriesAsync()
         {
-            var categories = await context.Set<Category>().ToListAsync();
+            var categories = await context.Set<CategoryDTO>().ToListAsync();
 
             return categories;
         }
@@ -29,9 +29,9 @@ namespace BadApi.Repositories
         //{
         //    return _context.Set<Category>().FirstOrDefault(c => c.Id == id);
         //}
-        public async Task<Category> GetCategooryByIdAsync(int id)
+        public async Task<CategoryDTO> GetCategooryByIdAsync(int id)
         {
-            var category = await context.Set<Category>().FirstOrDefaultAsync(c => c.Id == id);
+            var category = await context.Set<CategoryDTO>().FirstOrDefaultAsync(c => c.Id == id);
 
             return category;
         }
@@ -41,9 +41,9 @@ namespace BadApi.Repositories
         //    _context.Set<Category>().Add(category);
         //    _context.SaveChanges();
         //}
-        public async Task InsertCategoryAsync(Category category)
+        public async Task InsertCategoryAsync(CategoryDTO category)
         {
-            await context.Set<Category>().AddAsync(category);
+            await context.Set<CategoryDTO>().AddAsync(category);
             await context.SaveChangesAsync();
         }
 
@@ -57,9 +57,9 @@ namespace BadApi.Repositories
         //        _context.SaveChanges();
         //    }
         //}
-        public async Task UpdateCategoryAsync(Category category)
+        public async Task UpdateCategoryAsync(CategoryDTO category)
         {
-            var currCategory = await context.Set<Category>().FirstOrDefaultAsync(x => x.Id == category.Id);
+            var currCategory = await context.Set<CategoryDTO>().FirstOrDefaultAsync(x => x.Id == category.Id);
 
             if (currCategory != null)
             {
@@ -80,11 +80,11 @@ namespace BadApi.Repositories
         //}
         public async Task DeleteCategoryAsync(int id)
         {
-            var currCategory = await context.Set<Category>().FirstOrDefaultAsync(x => x.Id == id);
+            var currCategory = await context.Set<CategoryDTO>().FirstOrDefaultAsync(x => x.Id == id);
 
             if (currCategory != null)
             {
-                context.Set<Category>().Remove(currCategory);
+                context.Set<CategoryDTO>().Remove(currCategory);
 
                 await context.SaveChangesAsync();
             }
