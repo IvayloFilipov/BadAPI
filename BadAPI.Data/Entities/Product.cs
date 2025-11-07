@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel.DataAnnotations.Schema;
 using static Common.GlobalConstants;
 
 namespace BadAPI.Data.Entities
@@ -16,6 +16,7 @@ namespace BadAPI.Data.Entities
         public string? Name { get; set; }
 
         [Required]
+        [Precision(18, 2)]
         public decimal Price { get; set; }
 
         [ForeignKey(nameof(Category))]
@@ -24,5 +25,7 @@ namespace BadAPI.Data.Entities
 
         [NotMapped]
         public string? InternalCode { get; set; }
+
+        public ICollection<Review> Reviews { get; set; }
     }
 }

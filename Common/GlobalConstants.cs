@@ -20,5 +20,10 @@
         public const string Cannot_Delete_Expensive_Products = "Cannot delete expensive products";
         public const string Product_Added = "Product added";
         public const int Product_Name_Max_Length = 200;
+
+        // Reviews constants
+        public const string Rating_Must_Be_Between_1_And_5 = "Rating must be between 1 and 5";
+        public const string Comment_Cannot_Be_Empty = "Comment cannot be empty";
+        public const string Reviewer_Name_Is_Required = "Reviewer name is required";
     }
 }
